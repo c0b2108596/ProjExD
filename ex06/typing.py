@@ -18,7 +18,7 @@ class Music:
         pg.mixer.init(frequency = 44100,size = -16, channels = 2, buffer = 4096)    # 初期設定
         pg.mixer.music.load(BGM)     # 音楽ファイルの読み込み
         pg.mixer.music.play(loops = -1) 
-        if Hp == 0:
+        if hp == 0:
             pg.mixer.music.stop()
             return
 
@@ -76,7 +76,7 @@ class Application(tk.Frame):
         self.ans_label2 = tk.Label(self, text="", width=10, anchor="w", font=("",20))
         self.ans_label2.grid(row=1, column=1)
         #HPの配置
-        self.hp_label = tk.Label(self, text=f"HP：{Hp}", width=10, anchor="w", font=("", 20))
+        self.hp_label = tk.Label(self, text=f"HP：{hp}", width=10, anchor="w", font=("", 20))
         self.hp_label.grid(row=2, column=10)
         self.result_label = tk.Label(self, text="", font=("",20))
         self.result_label.grid(row=2, column=0, columnspan=2)
@@ -89,7 +89,7 @@ class Application(tk.Frame):
 
     # キー入力時のイベント処理
     def type_event(self, event):
-        global Hp
+        global hp
         # 入力値がEnterの場合は答え合わせ
         if event.keysym == "Return":
             if self.q_label2["text"] == self.ans_label2["text"]:
@@ -97,8 +97,8 @@ class Application(tk.Frame):
                 self.correct_cnt += 1
                 Music.se("MP3/kougeki.mp3")
             else:
-                Hp -= int(random.randint(20, 40))
-                self.hp_label = tk.Label(self, text=f"HP：{Hp}", width=10, anchor="w", font=("", 20))
+                hp -= int(random.randint(20, 40))
+                self.hp_label = tk.Label(self, text=f"HP：{hp}", width=10, anchor="w", font=("", 20))
                 self.hp_label.grid(row=2, column=10)
                 self.result_label.configure(text="残念！", fg="blue")
                 Music.se("MP3/damage1.mp3")
@@ -119,7 +119,7 @@ class Application(tk.Frame):
             self.q_label2.configure(text=QUESTION[self.index])
             
             #失敗した時
-            if Hp <= 0:
+            if hp <= 0:
                 self.flg = False
                 Music.end("MP3/make.mp3")
                 self.q_label2.configure(text="終了！")
@@ -137,16 +137,16 @@ class Application(tk.Frame):
     
     #経過時間の設定
     def timer(self):
-        global Hp
+        global hp
         self.second = 0
         self.flg = True
         while self.flg:
             self.second += 1
             #10秒毎に10ダメージ受ける機能の実装
             if self.second % 10 == 0:
-                Hp -= 10
+                hp -= 10
                 Music.se("MP3/damage1.mp3")
-                self.hp_label = tk.Label(self, text=f"HP：{Hp}", width=10, anchor="w", font=("", 20))
+                self.hp_label = tk.Label(self, text=f"HP：{hp}", width=10, anchor="w", font=("", 20))
                 self.hp_label.grid(row=2, column=10)
             self.time_label.configure(text=f"経過時間：{self.second}秒")
             time.sleep(1)
@@ -154,7 +154,7 @@ class Application(tk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    Hp = 100 #初期HPの設定
+    hp = 100 #初期HPの設定
     Application(master=root)
     
     #キャンバス作成
