@@ -7,8 +7,8 @@ import threading
 import random
 
 
-QUESTION = ["tkinter", "geometry", "widgets", "messagebox", "configure", 
-            "label", "column", "rowspan", "grid", "init"]
+QUESTION = [["tkinter", "geometry", "widgets", "messagebox", "configure", "label", "column", "rowspan", "computer", "doragon"],
+            ["love", "happy", "grid", "init", "def", "python", "cow", "ray", "row", "grace"]]
 
 
 #ゲーム内音楽の追加　C0B21115 寺内大空
@@ -66,10 +66,10 @@ class Application(tk.Frame):
     # ウィジェットの生成と配置
     def create_widgets(self):
         #お題の配置
-        random.shuffle(QUESTION)
+        random.shuffle(QUESTION[difficult])
         self.q_label = tk.Label(self, text="お題：", font=("",20))
         self.q_label.grid(row=0, column=0)
-        self.q_label2 = tk.Label(self, text=QUESTION[self.index], width=10, anchor="w", font=("",20))
+        self.q_label2 = tk.Label(self, text=QUESTION[difficult][self.index], width=10, anchor="w", font=("",20))
         self.q_label2.grid(row=0, column=1)
         #解答の配置
         self.ans_label = tk.Label(self, text="解答：", font=("",20))
@@ -111,13 +111,13 @@ class Application(tk.Frame):
             self.index += 1
             
             #クリアの場合
-            if self.index == len(QUESTION):
+            if self.index == len(QUESTION[difficult]):
                 self.flg = False
                 Music.end("MP3/kuria.mp3")
                 self.q_label2.configure(text="終了！")  
                 messagebox.showinfo("you win!", f"あなたはこうかとんに勝ちました。\nあなたのスコアは{self.correct_cnt}/{self.index}問正解です。\nスコアタイムは{self.second}秒です。")
                 sys.exit(0)
-            self.q_label2.configure(text=QUESTION[self.index])
+            self.q_label2.configure(text=QUESTION[difficult][self.index])
             
             #失敗した時
             if hp <= 0:
@@ -156,6 +156,7 @@ class Application(tk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     hp = 100 #初期HPの設定
+    difficult = random.randint(0, 1)
     Application(master=root)
     
     #キャンバス作成
