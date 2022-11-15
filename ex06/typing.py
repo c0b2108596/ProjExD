@@ -66,6 +66,7 @@ class Application(tk.Frame):
     # ウィジェットの生成と配置
     def create_widgets(self):
         #お題の配置
+        random.shuffle(QUESTION)
         self.q_label = tk.Label(self, text="お題：", font=("",20))
         self.q_label.grid(row=0, column=0)
         self.q_label2 = tk.Label(self, text=QUESTION[self.index], width=10, anchor="w", font=("",20))
